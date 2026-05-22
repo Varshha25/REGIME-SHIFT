@@ -1,0 +1,33 @@
+import os
+os.makedirs("output", exist_ok=True)
+comparison.to_csv("output/tear_sheet.csv")
+plt.savefig("output/tear_sheet.png", dpi=300, bbox_inches="tight")
+import os
+os.makedirs("output", exist_ok=True)
+
+comparison = pd.DataFrame({
+    "Dynamic_HMM": performance_stats(r_dyn),
+    "60_40": performance_stats(r_60_40),
+    "Equal_Weight": performance_stats(r_equal)
+}).T
+
+display(comparison)
+comparison.to_csv("output/tear_sheet.csv")
+
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+
+comparison["sharpe_ratio"].plot(kind="bar", ax=axes[0, 0], color=["blue", "gray", "green"])
+axes[0, 0].set_title("Sharpe Ratio")
+
+comparison["sortino_ratio"].plot(kind="bar", ax=axes[0, 1], color=["blue", "gray", "green"])
+axes[0, 1].set_title("Sortino Ratio")
+
+comparison["max_drawdown"].plot(kind="bar", ax=axes[1, 0], color=["blue", "gray", "green"])
+axes[1, 0].set_title("Max Drawdown")
+
+comparison["calmar_ratio"].plot(kind="bar", ax=axes[1, 1], color=["blue", "gray", "green"])
+axes[1, 1].set_title("Calmar Ratio")
+
+plt.tight_layout()
+plt.savefig("output/tear_sheet.png", dpi=300, bbox_inches="tight")
+plt.show()
